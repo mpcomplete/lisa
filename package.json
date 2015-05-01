@@ -2,7 +2,7 @@
   "name": "lisa",
   "description": "Imports item sets for champions from online guides",
   "version": "1.0.0",
-  "main": "launcher.html",
+  "main": "lib/launcher.html",
   "dependencies": {
     "buffer-crc32": "^0.2.5",
     "compare-version": "^0.1.2",
