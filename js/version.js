@@ -23,6 +23,7 @@ function checkVersion() {
   window.setUIDisabled(true);
 
   Net.fetchUrl(kBaseUrl + "LATEST").then(function(newVersion) {
+    newVersion = newVersion.trim();
     if (compareVersion(Package.version, newVersion) < 0) {
       gTemplate.version.updateUrl = getUpdateUrl(newVersion);
       gTemplate.version.updateMessage =
@@ -66,7 +67,6 @@ function restartVersion() {
 
 function getUpdateUrl(version) {
   return kUpdateUrl.replace("{{VERSION}}", version);
-
 }
 
 exports.init = init;
