@@ -144,7 +144,7 @@
       <td> <paper-button raised on-tap="{{importUrlTapped}}">Import URL</paper-button> </td>
     </tr>
     <tr>
-      <td> <input type="file" id="import-file" flex/> </td>
+      <td> <input type="file" id="import-file" on-change="{{importFileTapped}}" flex/> </td>
       <td><paper-button raised on-tap="{{importFileTapped}}">Import Zip</paper-button> </td>
     </tr>
     <tr>
