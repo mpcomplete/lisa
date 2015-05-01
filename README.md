@@ -1,15 +1,15 @@
-# Lisa
+# Lisa: League Item Set Assistant
 
+A graphical tool for League of Legends. Lets you import, edit, and manage item
+sets.
+
+## Features:
+
+* Import item sets from mobafire.com, champion.gg, zip files, and your LoL directory.
+* Edit item sets quickly with an autocompleting item picker.
+* Builtin updater.
 Imports item sets.
 
 ## Screen shot
 
 ![screenshot](http://i.imgur.com/HJ3DC.jpg)
-
-## APIs
-
-* [fs module](http://nodejs.org/api/fs.html)
-* [events module](http://nodejs.org/api/events.html)
-* [path module](http://nodejs.org/api/path.html)
-* [util module](http://nodejs.org/api/util.html)
-* [child_process module](http://nodejs.org/api/child_process.html)
