@@ -1,15 +1,8 @@
-# TODO: can launcher.* be overwritten while running?
 APPDATA = \
 	components/ \
-	css/ \
 	images/ \
-	js/ \
 	node_modules/ \
 	lib/ \
-	launcher.html \
-	launcher.js \
-	index.html \
-	index.js \
 	package.json
 
 # No need to ship these nwjs files. They're just dead weight.

@@ -1,7 +1,7 @@
 BOWER=~/lib/bower
 LESSC=~/lib/lessc
 
-all: node_modules/unzip components/polymer css/index.css
+all: node_modules/unzip components/polymer lib/css/index.css
 
 dist:
 	cd dist && make
