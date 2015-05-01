@@ -41,8 +41,7 @@ function checkVersion() {
 function updateVersion() {
   window.setUIDisabled(true);
 
-  Net.get(gTemplate.version.updateUrl, function(response) {
-    window.response = response;
+  Net.get(gTemplate.version.updateUrl).then(function(response) {
     response.pipe(FS.createWriteStream(kPackageZip))
         .on("finish", function() {
           window.toast("New version downloaded.");
@@ -50,9 +49,12 @@ function updateVersion() {
           gTemplate.version.needs = "restart";
         })
         .on("error", function(e) {
-          window.toast("Failed fetching new version: " + e, e);
+          window.toast("Failed saving update: " + e, e);
           window.setUIDisabled(false);
         });
+  }).catch(function(e) {
+    window.toast("Failed fetching update: " + e, e);
+    window.setUIDisabled(false);
   });
 }
 
