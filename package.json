@@ -1,6 +1,6 @@
 {
   "name": "lisa",
-  "description": "Imports item sets for champions from online guides",
+  "description": "League Item Set Assistant lets you import and edit item sets for League of Legends",
   "version": "1.0.0",
   "main": "lib/launcher.html",
   "dependencies": {
