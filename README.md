@@ -8,7 +8,6 @@ sets.
 * Import item sets from mobafire.com, champion.gg, zip files, and your LoL directory.
 * Edit item sets quickly with an autocompleting item picker.
 * Builtin updater.
-Imports item sets.
 
 ## Screen shot
 
