@@ -16,6 +16,8 @@ function maybeUnpack() {
       .pipe(Unzip.Parse())
       .on("error", fail)
       .on("entry", function(entry) {
+        if (promises.length == 0)
+          message("Updating...");
         var promise = handleZipEntry(entry);
         if (promise) promises.push(promise);
         else entry.autodrain();
