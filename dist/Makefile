@@ -20,7 +20,10 @@ NWJS_NOSHIP = \
 	nwjc \
 	pdf.dll
 
+VERSION = $(shell cat ../LATEST)
+
 MACDIR=Lisa/nwjs.app/Contents/Resources/app.nw
+PLISTDIR=Lisa/nwjs.app/Contents
 WINDIR=Lisa
 
 DEPS = $(APPDATA:%=../%)
@@ -44,6 +47,7 @@ Lisa-%.zip: nwjs-%.zip Lisa-appdata.zip
 	cd Lisa && rm -f $(NWJS_NOSHIP)
 	if [ -d Lisa/nwjs.app ]; then \
 	  unzip -q Lisa-appdata.zip -d $(MACDIR); \
+	  sed -e 's/{{VERSION}}/$(VERSION)/g' Info.plist > $(PLISTDIR)/Info.plist; \
 	else \
 	  unzip -q Lisa-appdata.zip -d $(WINDIR); \
 	fi
