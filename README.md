@@ -9,6 +9,8 @@ sets.
 * Edit item sets quickly with an autocompleting item picker.
 * Builtin updater.
 
-## Screen shot
+## Screen shots
 
-![screenshot](http://i.imgur.com/HJ3DC.jpg)
+![screenshot](http://i.imgur.com/Uv4J66I.png)
+
+![screenshot](http://i.imgur.com/UxuhFMY.png)
