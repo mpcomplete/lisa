@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<link rel="stylesheet" href="lib/css/selectize.default.css">
+<link rel="stylesheet" href="css/index.css">
+
+<script src="components/webcomponentsjs/webcomponents.js"></script>
+<script src="lib/js/jquery.min.js"></script>
+<script src="lib/js/jquery-ui.min.js"></script>
+<script src="lib/js/selectize.min.js"></script>
+<script src="index.js"></script>
+
+<link rel="import" href="components/core-menu/core-menu.html">
+<link rel="import" href="components/core-pages/core-pages.html">
+<link rel="import" href="components/core-scaffold/core-scaffold.html">
+<link rel="import" href="components/core-toolbar/core-toolbar.html">
+<link rel="import" href="components/core-tooltip/core-tooltip.html">
+<link rel="import" href="components/paper-button/paper-button.html">
+<link rel="import" href="components/paper-dialog/paper-action-dialog.html">
+<link rel="import" href="components/paper-item/paper-item.html">
+<link rel="import" href="components/paper-fab/paper-fab.html">
+<link rel="import" href="components/paper-spinner/paper-spinner.html">
+<link rel="import" href="components/paper-tabs/paper-tabs.html">
+<link rel="import" href="components/paper-toast/paper-toast.html">
+<link rel="import" href="components/paper-checkbox/paper-checkbox.html">
+
+</head>
+<body fullbleed>
+<template is="auto-binding">
+<style>
+  .itemNames {
+    display: {{settings.showItemNames ? "block" : "none"}};
+  }
+  html /deep/ paper-action-dialog input[type="file"] {
+    {{leagueRootValid ? "" : "color: red;"}};
+  }
+</style>
+
+<core-scaffold>
+  <core-header-panel navigation flex>
+    <core-toolbar>Lisa</core-toolbar>
+      <paper-button on-tap="{{importTapped}}">
+        <core-icon icon="cloud-download"></core-icon> Import
+      </paper-button>
+      <paper-button on-tap="{{saveTapped}}">
+        <core-icon icon="save"></core-icon> Save
+      </paper-button>
+      <paper-button on-tap="{{revertTapped}}">
+        <core-icon icon="undo"></core-icon> Revert
+      </paper-button>
+      <paper-button on-tap="{{settingsTapped}}">
+        <core-icon icon="settings"></core-icon> Settings
+      </paper-button>
+    <div>Recently opened</div>
+    <core-menu on-core-activate="{{selectChampion}}">
+      <template repeat="{{openChampion in openChampions}}">
+        <paper-item>{{openChampion.name}}
+          <template if="{{openChampion._lisa_changed}}">*</template>
+        </paper-item>
+      </template>
+    </core-menu>
+  </core-header-panel>
+
+  <core-toolbar class="main" tool flex>
+    <select class="championPicker"></select>
+    <paper-tabs selected="0" id="itemSetTabs" noink nobar>
+      <template repeat="{{_,index in champion.itemSets}}">
+        <paper-tab>{{index + 1}}</paper-tab>
+      </template>
+    </paper-tabs>
+    <span flex></span>
+    <template if="{{champion.itemSets.length == 0}}">
+      Add itemset ==&gt;
+    </template>
+    <core-tooltip label="Add a new item set page">
+      <paper-fab mini icon="add" on-tap="{{itemSetAdd}}"></paper-fab>
+    </core-tooltip>
+    <core-tooltip label="Delete this item set page">
+      <paper-fab mini icon="delete" on-tap="{{itemSetDelete}}"></paper-fab>
+    </core-tooltip>
+  </core-toolbar>
+
+  <core-pages class="content" selected="{{$.itemSetTabs.selected}}" fit>
+    <template repeat="{{set in champion.itemSets}}">
+      <div class="itemSet">
+        <input class="itemSetName" type="text" value="{{set.title}}" />
+        <div class="itemBlock-container">
+          <template repeat="{{block in set.blocks}}">
+            <div class="itemBlock">
+              <div horizontal layout>
+                <input class="itemBlockName" type="text" value="{{block.type}}" />
+                <span flex></span>
+                <core-tooltip label="Delete this block">
+                  <paper-fab mini icon="delete" on-tap="{{blockDelete}}"></paper-fab>
+                </core-tooltip>
+              </div>
+              <select class="itemPicker" placeholder="Add Item..." multiple="multiple">
+                <template repeat="{{item in block.items}}">
+                  <option selected="selected" value="{{item.id}}">{{item.name}}</option>
+                </template>
+              </select>
+            </div>
+          </template>
+          <div class="itemBlock">
+            <div horizontal layout>
+              <input class="itemBlockName" type="text" value="New Block" on-change="{{blockAdd}}"/>
+              <span flex></span>
+              <core-tooltip label="Add a new block">
+                <paper-fab mini icon="add" on-tap="{{blockAdd}}"></paper-fab>
+              </core-tooltip>
+            </div>
+          </div>
+          <!-- Add a buffer element so the item selector is never at the
+               very bottom. -->
+          <div style="height: 175px"></div>
+        </div>
+      </div>
+    </template>
+    <template if="{{champion.itemSets.length == 0}}">
+      <div class="itemSet">
+        No Lisa-managed item sets for this champion. Use the Import tool to
+        import itemsets from a mobafire.com build page, or create a new page
+        using the Add Page button at the top right.
+      </div>
+    </template>
+  </core-pages>
+</core-scaffold>
+
+<paper-action-dialog id="import-dialog" heading="Import Item Sets" backdrop>
+  <div>
+    You can import itemsets from multiple sources:
+    <ul>
+      <li>An URL from a champion build page on mobafire.com or champion.gg.
+      <li>A .zip file containing champion builds (see
+        <a onclick="javascript:return false;" href="http://www.reddit.com/r/leagueoflegends/comments/32ea2b/championgg_item_sets_updated_for_patch_57_script/">
+        here</a>).
+      <li>Your League of Legends-managed itemsets. These imports will be copies of your League of Legends itemsets, since Lisa cannot modify those directly.
+    </ul>
+  </div>
+  <table>
+    <tr>
+      <td> <input type="text" id="import-url" placeholder="Enter URL..." on-change="{{importChanged}}" autofocus flex/> </td>
+      <td> <paper-button raised on-tap="{{importUrlTapped}}">Import URL</paper-button> </td>
+    </tr>
+    <tr>
+      <td> <input type="file" id="import-file" flex/> </td>
+      <td><paper-button raised on-tap="{{importFileTapped}}">Import Zip</paper-button> </td>
+    </tr>
+    <tr>
+      <td>Import from {{settings.leagueRoot}}</td>
+      <td><paper-button raised on-tap="{{importClientTapped}}">Import Client</paper-button> </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><paper-spinner></paper-spinner></td>
+    </tr>
+  </table>
+  <div layout horizontal>
+    <span flex></span>
+    <paper-button raised dismissive>Cancel</paper-button>
+  </div>
+</paper-action-dialog>
+
+<paper-action-dialog id="settings-dialog" heading="Settings" backdrop>
+  <template if="{{leagueRootExists && !leagueRootValid}}">
+    <div>
+      This doesn't look like a League of Legends folder to me. Please choose
+      the correct location below. Choose the top-most folder (the
+      one that contains lol.launcher.exe).
+    </div>
+  </template>
+  <table>
+    <tr>
+      <td>
+        League folder{{leagueRootValid ? "" : " (invalid)"}}
+      </td>
+      <td>
+        <input hidden?="{{hasUnsavedChanges}}" type="file" class="leagueRoot" nwdirectory on-change="{{leagueRootChanged}}" flex/>
+        <span  hidden?="{{!hasUnsavedChanges}}">
+          (Revert or save changes before modifying.)
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td>Show item names</td>
+      <td><paper-checkbox checked="{{settings.showItemNames}}" on-change="{{showItemNamesChanged}}"></paper-checkbox></td>
+    </tr>
+    <tr>
+      <td>Version</td>
+      <td>
+        <div>
+          <span style="padding-right: 10px">{{version.version}}</span>
+          <paper-spinner></paper-spinner>
+          <template if="{{version.needs == 'check'}}">
+            <paper-button raised on-tap="{{versionCheckTapped}}">Check for update</paper-button>
+          </template>
+          <template if="{{!version.needs}}">
+            <span style="color: green">(up to date)</span>
+          </template>
+          <template if="{{version.needs == 'update'}}">
+            <paper-button raised on-tap="{{versionUpdateTapped}}">Fetch update</paper-button>
+          </template>
+          <template if="{{version.needs == 'restart'}}">
+            <paper-button raised on-tap="{{versionRestartTapped}}">Restart to apply</paper-button>
+          </template>
+          <span style="padding-left: 10px">
+            {{version.updateMessage}}
+          </span>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <div layout horizontal>
+    <span flex></span>
+    <paper-button raised affirmative>OK</paper-button>
+  </div>
+</paper-action-dialog>
+
+<paper-action-dialog id="firstrun-dialog" heading="Welcome to Lisa" backdrop>
+  <template if="{{!leagueRootExists}}">
+    <div>
+      I can't find where League of Legends is installed. Please tell me by
+      choosing the correct folder below. Choose the top-most folder (the
+      one that contains lol.launcher.exe).
+    </div>
+  </template>
+  <template if="{{leagueRootExists && !leagueRootValid}}">
+    <div>
+      I'm looking for your League of Legends installation, and I found
+      {{settings.leagueRoot}}.
+      <p>
+      This doesn't look like a League of Legends folder to me. Please choose
+      the correct location below. Choose the top-most folder (the
+      one that contains lol.launcher.exe).
+    </div>
+  </template>
+  <template if="{{leagueRootExists && leagueRootValid}}">
+    <div>
+      Excellent! It looks like League of Legends is installed at
+      {{settings.leagueRoot}}. If this is incorrect, please update the folder
+      below.
+    </div>
+  </template>
+
+  <table>
+    <tr>
+      <td>League folder:</td>
+      <td><input type="file" class="leagueRoot" nwdirectory on-change="{{leagueRootChanged}}" flex/></td>
+    </tr>
+  </table>
+  <div layout horizontal>
+    <span flex></span>
+    <paper-button raised affirmative>OK</paper-button>
+  </div>
+</paper-action-dialog>
+
+<paper-toast>
+</paper-toast>
+
+</template>
+</body>
+</html>

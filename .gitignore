@@ -1,0 +1,7 @@
+*.swp
+/league
+/Image Cache
+/components
+/node_modules
+/settings.json
+/run.sh

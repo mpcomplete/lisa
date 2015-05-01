@@ -1,0 +1,33 @@
+{
+  "name": "lisa",
+  "main": "index.html",
+  "version": "0.1.0",
+  "homepage": "https://github.com/mpcomplete/lisa",
+  "authors": [
+    "Matt Perry <mpcomplete@gmail.com>"
+  ],
+  "description": "Imports item sets for champions from online guides",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5",
+    "core-pages": "Polymer/core-pages#^0.5.0",
+    "core-scaffold": "Polymer/core-scaffold#~0.5.5",
+    "core-toolbar": "Polymer/core-toolbar#^0.5.0",
+    "core-tooltip": "Polymer/core-tooltip#~0.5.5",
+    "paper-dialog": "Polymer/paper-dialog#~0.5.5",
+    "paper-fab": "Polymer/paper-fab#~0.5.5",
+    "paper-tabs": "Polymer/paper-tabs#^0.5.0",
+    "paper-toast": "Polymer/paper-toast#~0.5.5",
+    "paper-item": "Polymer/paper-item#~0.5.5",
+    "core-menu": "Polymer/core-menu#~0.5.5",
+    "paper-checkbox": "Polymer/paper-checkbox#~0.5.5",
+    "paper-spinner": "Polymer/paper-spinner#~0.5.5"
+  }
+}

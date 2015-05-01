@@ -1,0 +1,16 @@
+{
+  "name": "lisa",
+  "description": "Imports item sets for champions from online guides",
+  "version": "0.1.0",
+  "main": "launcher.html",
+  "dependencies": {
+    "buffer-crc32": "^0.2.5",
+    "compare-version": "^0.1.2",
+    "unzip": "~0.1.11"
+  },
+  "window": {
+    "toolbar": true,
+    "width": 1000,
+    "height": 800
+  }
+}
