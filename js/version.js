@@ -21,7 +21,6 @@ function checkVersion() {
   window.setUIDisabled(true);
 
   Net.fetchUrl(kBaseUrl + "LATEST").then(function(newVersion) {
-    newVersion = "1.0.0";
     if (compareVersion(Package.version, newVersion) < 0) {
       gTemplate.version.updateMessage =
           "(version " + newVersion + " available)";
