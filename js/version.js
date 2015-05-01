@@ -4,9 +4,11 @@ var Net = require("./net.js");
 var Package = require("../package.json");
 var SwfExtractor = require("./swfExtractor.js");
 
-var kBaseUrl = "https://raw.githubusercontent.com/mpcomplete/lisa/master/";
-var kUpdateUrl = "https://github.com/mpcomplete/lisa/releases/download/0.1.0/Lisa-appdata.zip";
 var kPackageZip = "Lisa-appdata.zip";
+var kBaseUrl = "https://raw.githubusercontent.com/mpcomplete/lisa/master/";
+var kUpdateUrl =
+    "https://github.com/mpcomplete/lisa/releases/download/{{VERSION}}/"
+    + kPackageZip;
 var gTemplate;
 
 function init() {
@@ -22,6 +24,7 @@ function checkVersion() {
 
   Net.fetchUrl(kBaseUrl + "LATEST").then(function(newVersion) {
     if (compareVersion(Package.version, newVersion) < 0) {
+      gTemplate.version.updateUrl = getUpdateUrl(newVersion);
       gTemplate.version.updateMessage =
           "(version " + newVersion + " available)";
       gTemplate.version.needs = "update";
@@ -38,7 +41,7 @@ function checkVersion() {
 function updateVersion() {
   window.setUIDisabled(true);
 
-  Net.get(kUpdateUrl, function(response) {
+  Net.get(gTemplate.version.updateUrl, function(response) {
     window.response = response;
     response.pipe(FS.createWriteStream(kPackageZip))
         .on("finish", function() {
@@ -59,15 +62,9 @@ function restartVersion() {
   });
 }
 
-function updateFile(file) {
-  return Net.fetchUrl(kBaseUrl + file).then(function(content) {
-    return new Promise(function(resolve, reject) {
-      FS.writeFile("./" + file, content, function(err) {
-        if (err) return reject(e);
-        resolve();
-      });
-    });
-  });
+function getUpdateUrl(version) {
+  return kUpdateUrl.replace("{{VERSION}}", version);
+
 }
 
 exports.init = init;
