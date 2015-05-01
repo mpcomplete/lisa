@@ -33,7 +33,9 @@ Lisa-appdata.zip: $(DEPS)
 	mkdir -p Lisa
 	cd ../ && cp -a $(APPDATA) dist/Lisa
 	find Lisa -name '*.sw[po]' -exec rm \{\} \;
-	cd Lisa && zip -q -r ../Lisa-appdata.zip .
+	cd Lisa && \
+	  cat package.json | sed -e 's/"toolbar": true/"toolbar": false/' > package.json && \
+	  zip -q -r ../Lisa-appdata.zip .
 	rm -rf Lisa
 
 Lisa-%.zip: nwjs-%.zip Lisa-appdata.zip
