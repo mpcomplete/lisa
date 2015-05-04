@@ -222,5 +222,5 @@
   "Enchantment: Warrior":                      {"id": 3707, "path": "Stalkers_Blade1_i189.png"},
 
   "comment": "Used for an unrecognized item.",
-  "Unrecognized item":                         {"id": 0, "path": "../images/sad.png"}
+  "Unrecognized item":                         {"id": 0, "path": "images/unknown.png"}
 }
