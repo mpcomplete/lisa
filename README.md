@@ -11,7 +11,7 @@ sets.
 
 ## How to run:
 
-1. Download the [latest release](https://github.com/mpcomplete/lisa/releases/latest) for your platform. E.g., if you are running 64-bit Windows, download Lisa-win64.zip.
+1. Download the [latest release](https://github.com/mpcomplete/lisa/releases/latest) for your platform. E.g., if you are running 64-bit Windows, download Lisa-win64.zip. Ignore Lisa-appdata.zip (it's used for updates).
 2. Unzip the file. You can put the extracted folder wherever you want.
 3. Open the created folder and run 'nw.exe' ('nwjs.app' on Mac).
 4. Lisa will try to find your League of Legends installation. If she can't find it, she'll ask for your help.
