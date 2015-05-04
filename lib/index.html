@@ -177,10 +177,10 @@
   <table>
     <tr>
       <td>
-        League folder{{leagueRootValid ? "" : " (invalid)"}}
+        LOL launcher.exe{{leagueRootValid ? "" : " (invalid)"}}
       </td>
       <td>
-        <input hidden?="{{hasUnsavedChanges}}" type="file" class="leagueRoot" nwdirectory on-change="{{leagueRootChanged}}" flex/>
+        <input hidden?="{{hasUnsavedChanges}}" type="file" class="leagueRoot" accept="{{exeExtension}}" on-change="{{leagueRootChanged}}" flex/>
         <span  hidden?="{{!hasUnsavedChanges}}">
           (Revert or save changes before modifying.)
         </span>
@@ -225,8 +225,7 @@
   <template if="{{!leagueRootExists}}">
     <div>
       I can't find where League of Legends is installed. Please tell me by
-      choosing the correct folder below. Choose the top-most folder (the
-      one that contains lol.launcher.exe).
+      choosing your lol.launcher.exe file in the League of Legends folder.
     </div>
   </template>
   <template if="{{leagueRootExists && !leagueRootValid}}">
@@ -235,8 +234,7 @@
       {{settings.leagueRoot}}.
       <p>
       This doesn't look like a League of Legends folder to me. Please choose
-      the correct location below. Choose the top-most folder (the
-      one that contains lol.launcher.exe).
+      the correct location of lol.launcher.exe below.
     </div>
   </template>
   <template if="{{leagueRootExists && leagueRootValid}}">
@@ -249,8 +247,8 @@
 
   <table>
     <tr>
-      <td>League folder:</td>
-      <td><input type="file" class="leagueRoot" nwdirectory on-change="{{leagueRootChanged}}" flex/></td>
+      <td>LOL launcher.exe:</td>
+      <td><input type="file" class="leagueRoot" accept="{{exeExtension}}" on-change="{{leagueRootChanged}}" flex/></td>
     </tr>
   </table>
   <div layout horizontal>
