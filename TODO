@@ -21,4 +21,4 @@ Copy/paste item block:
 Typescript
 
 BUG:
-settings.js:149
+import zip/client clobber any changes.
