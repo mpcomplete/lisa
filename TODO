@@ -1,7 +1,7 @@
 champion.gg import:
-- import all builds for a champion.
-- prefix it with "champion.gg"
-- consumables should include trinkets
+- mark it with "champion.gg" and non-user-modified so we can delete it in
+  future.
+- import all champions at once.
 
 Distribution scheme.
 - icons?
