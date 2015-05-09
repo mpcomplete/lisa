@@ -19,3 +19,6 @@ Copy/paste item block:
 - Paste button next to Add Block
 
 Typescript
+
+BUG:
+settings.js:149
